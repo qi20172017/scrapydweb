@@ -78,7 +78,7 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
-    handle_db(app)
+    handle_db(app)    # 创建数据库表
     handle_route(app)
     handle_template_context(app)
 
