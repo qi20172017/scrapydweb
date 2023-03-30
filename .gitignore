@@ -45,3 +45,6 @@ build/
 .idea
 twistd.pid
 .venv
+logs
+eggs
+dbs

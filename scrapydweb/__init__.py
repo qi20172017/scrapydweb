@@ -156,10 +156,47 @@ def handle_route(app):
                     defaults = dict(node=1)
             app.add_url_rule(rule, defaults=defaults, view_func=view_func)
 
+    """
+    使用 as_view() 方法可以将一个类转换成一个视图函数，这个视图函数会在每个请求时动态实例化该类，并调用该类的 dispatch_request() 方法来处理请求。 as_view() 方法将类的构造函数中接收到的参数转发到实例化该类时使用。
+
+    例如，假设有一个类 MyView，它定义了一个处理 HTTP GET 请求的方法 get()：
+    
+    from flask.views import View
+    
+    class MyView(View):
+        def dispatch_request(self):
+            return 'Hello, World!'
+    
+        def get(self):
+            return self.dispatch_request()
+    使用 as_view() 方法将 MyView 类转换成一个视图函数，并将其绑定到一个 URL：
+    
+    app.add_url_rule('/hello', view_func=MyView.as_view('myview'))
+    在这个例子中，as_view() 方法返回一个视图函数，该视图函数实例化 MyView 类，并调用其 dispatch_request() 方法来处理请求。 view_func 参数用于将视图函数与 URL 绑定起来，并指定视图函数的名称（在这个例子中为 'myview'）。
+    
+    总之，as_view() 方法是 Flask 框架中一个用于将类转换成视图函数的方法，它可以将一个类实例化，并在每个请求时调用其 dispatch_request() 方法来处理请求。
+    """
+
     from .views.index import IndexView
     index_view = IndexView.as_view('index')
     app.add_url_rule('/<int:node>/', view_func=index_view)
-    app.add_url_rule('/', defaults=dict(node=1), view_func=index_view)
+    app.add_url_rule('/', defaults=dict(node=1), view_func=index_view) # defaults是传给view_func的参数
+    """
+    在 Flask 框架中，app.add_url_rule() 是一个用于将 URL 与视图函数绑定的方法。它会将一个 URL 与一个处理该 URL 的函数或方法关联起来，以便在用户访问该 URL 时，该函数或方法将被调用来处理请求，生成响应并返回给用户。
+    这个方法接受三个参数：
+    rule：指定 URL 规则，即 URL 的路径，可以包含变量规则和正则表达式匹配。
+    endpoint：指定视图函数的名称，即该 URL 的处理函数。
+    view_func：指定处理该 URL 的视图函数。
+    例如，下面的代码将 /hello URL 绑定到一个名为 hello_world 的视图函数：
+    from flask import Flask
+    app = Flask(__name__)
+    def hello_world():
+        return 'Hello, World!'
+    app.add_url_rule('/hello', 'hello_world', hello_world)
+    在这个例子中，add_url_rule() 方法将 /hello URL 与 hello_world() 函数绑定起来。当用户访问 /hello 时，hello_world() 函数会被调用来处理请求，生成响应并返回给用户。该方法还可以接受其他参数，例如 methods 参数指定支持的请求方法，defaults 参数指定视图函数的默认值等。
+    总之，app.add_url_rule() 是 Flask 框架中一个用于将 URL 与视图函数绑定的方法，它用于将 URL 规则与处理该 URL 的视图函数关联起来，以便在用户访问该 URL 时，该视图函数将被调用来处理请求，并生成响应并返回给用户。
+    """
+
 
     from .views.api import ApiView
     register_view(ApiView, 'api', [
