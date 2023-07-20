@@ -15,7 +15,7 @@ import os
 # Setting SCRAPYDWEB_BIND to '0.0.0.0' or IP-OF-THE-CURRENT-HOST would make
 # ScrapydWeb server visible externally; Otherwise, set it to '127.0.0.1'.
 # The default is '0.0.0.0'.
-SCRAPYDWEB_BIND = '0.0.0.0'
+SCRAPYDWEB_BIND = '127.0.0.1'
 # Accept connections on the specified port, the default is 5000.
 SCRAPYDWEB_PORT = 5050
 
@@ -367,3 +367,10 @@ DATA_PATH = os.environ.get('DATA_PATH', '')
 # 'sqlite:////home/username'
 # DATABASE_URL = os.environ.get('DATABASE_URL', '')
 DATABASE_URL = 'mysql://root:12345678@127.0.0.1:3306'
+
+"""
+/root/other_bid_project/ToolOfAnalysls/venv/bin/python /root/other_bid_project/Muto/plantform/zl_count.py >> /data/bid_project_logs/zl_count_$(date +\%Y-\%m-\%d).log
+
+
+nohup scrapydweb >> /data/logs/scrapydweb_$(date +\%Y-\%m-\%d).log 2>&1&
+"""

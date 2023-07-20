@@ -45,6 +45,9 @@ JOB_KEYS = ['project', 'spider', 'job', 'pid', 'start', 'runtime', 'finish', 'hr
 
 
 class JobsView(BaseView):
+    """
+    通过调用scrapyd的接口查出当前任务的状态，然后整理等待的任务，进行的任务，结束的任务，然后显示给前端
+    """
     # methods = ['GET']
     metadata = metadata
 
@@ -65,7 +68,7 @@ class JobsView(BaseView):
             self.logger.debug("Change per_page to %s", self.metadata['per_page'])
         self.page = request.args.get('page', default=1, type=int)
 
-        self.url = 'http://%s/jobs' % self.SCRAPYD_SERVER
+        self.url = 'http://%s/jobs' % self.SCRAPYD_SERVER        # 请球的就是jobs这个地址
         if self.SCRAPYD_SERVER_PUBLIC_URL:
             self.public_url = '%s/jobs' % self.SCRAPYD_SERVER_PUBLIC_URL
         else:
@@ -95,7 +98,8 @@ class JobsView(BaseView):
         self.Job = None  # database class Job
 
     def dispatch_request(self, **kwargs):
-        status_code, self.text = self.make_request(self.url, auth=self.AUTH, as_json=False)
+        status_code, self.text = self.make_request(self.url, auth=self.AUTH, as_json=False) # 这个方法是去访问了scrapyd的接口，从而获取当前的一些运行的状态
+        print('self.text: ', self.text)
         if status_code != 200 or not re.search(r'<body><h1>Jobs</h1>', self.text):
             kwargs = dict(
                 node=self.node,
@@ -107,7 +111,9 @@ class JobsView(BaseView):
             return render_template(self.template_fail, **kwargs)
         # Temp support for Scrapyd v1.3.0 (not released)
         self.text = re.sub(r'<thead>.*?</thead>', '', self.text, flags=re.S)
+        print('scrpayd的返回结果：', self.text)
         self.jobs = [dict(zip(JOB_KEYS, job)) for job in re.findall(JOB_PATTERN, self.text)]
+        print('self.jobs: ', self.jobs)
         self.jobs_backup = list(self.jobs)
 
         if self.listjobs:

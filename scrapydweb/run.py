@@ -250,3 +250,11 @@ def update_app_config(config, args):
 
 if __name__ == '__main__':
     main()
+
+
+"""
+问题就在于：scrapyd不在支持py3.6了。但是scrapydweb只支持py3.6
+
+scrapyd 的安装目录
+/root/anaconda2/envs/py37/lib/python3.7/site-packages/scrapyd
+"""

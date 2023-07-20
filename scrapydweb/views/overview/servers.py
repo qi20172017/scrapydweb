@@ -49,7 +49,7 @@ class ServersView(BaseView):
             project=self.project,
             version_job=self.version_job,
             spider=self.spider,
-            url=self.url,
+            url=self.url,                      # 把这个数据发送给了前端，前端再直接调用这个接口。返回json渲染
             selected_nodes=self.selected_nodes,
             IS_IE_EDGE=self.IS_IE_EDGE,
             pageview=self.metadata['pageview'],

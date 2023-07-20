@@ -296,8 +296,10 @@ class BaseView(View):
 
             if data:
                 r = session.post(url, data=data, auth=auth, timeout=timeout)
+                print('session.post: ', url)
             else:
                 r = session.get(url, auth=auth, timeout=timeout)
+                print('session.get: ', url)
             r.encoding = 'utf-8'
         except Exception as err:
             # self.logger.error('!!!!! %s %s' % (err.__class__.__name__, err))
